@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Put,
-  Delete,
-  Query,
-} from '@nestjs/common';
+import { Get, Post, Body, Put, Delete, Query } from '@nestjs/common';
 import { PokemonService } from './pokemon.service';
 import { DeltPokDto } from './pokemonDto/deletePokemon-req.dto';
 import { GetPokDto } from './pokemonDto/getPokemon-req.dto';
@@ -20,13 +12,12 @@ import { DelPokDtoRes } from './pokemonDto/deletePokemon-res.dto';
 import {
   ApiBadRequestResponse,
   ApiOkResponse,
-  ApiTags,
   ApiSecurity,
 } from '@nestjs/swagger';
+import { CustomController } from 'src/custom.decorator';
 
-@ApiTags('pokemon')
+@CustomController('pokemon')
 @ApiSecurity('access-token')
-@Controller('pokemon')
 export class PokemonController {
   constructor(private readonly pokemonService: PokemonService) {}
 

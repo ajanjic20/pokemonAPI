@@ -1,5 +1,4 @@
 import {
-  Controller,
   HttpException,
   HttpStatus,
   Post,
@@ -11,11 +10,12 @@ import { AuthService } from './auth.service';
 import * as jwt from 'jsonwebtoken';
 import { AuthDto } from './authDto/auth-req.dto';
 import { AuthResDto } from './authDto/auth-res.dto';
-import { ApiBadRequestResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiOkResponse } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
+import { CustomController } from 'src/custom.decorator';
+import { UnauthorizedException } from 'src/unauthorized.exception';
 
-@ApiTags('user')
-@Controller()
+@CustomController('user')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
@@ -33,10 +33,7 @@ export class AuthController {
       dto.password,
     );
     if (!userExists) {
-      throw new HttpException(
-        'Invalid email, phone or password',
-        HttpStatus.UNAUTHORIZED,
-      );
+      throw new UnauthorizedException();
     }
     const payload = { email: dto.email };
     const secret = this.configService.get('JWT_SECRET');

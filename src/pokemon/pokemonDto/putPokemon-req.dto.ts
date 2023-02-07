@@ -6,7 +6,7 @@ export class PutPokDto {
   @IsNotEmpty({ message: 'Name is required.' })
   name: string;
 
-  @ApiProperty()
+  @ApiProperty({ default: [] })
   @IsNotEmpty({ message: 'Types is required.' })
   types: string[];
 
@@ -14,15 +14,15 @@ export class PutPokDto {
   @IsNotEmpty({ message: 'Internal id is required.' })
   internalId: number;
 
-  @ApiProperty()
+  @ApiProperty({ default: [] })
   @IsNotEmpty({ message: 'Abilities is required.' })
   abilities: string;
 
-  @ApiProperty()
+  @ApiProperty({ default: [] })
   @IsNotEmpty({ message: 'Evolution is required.' })
   evolutions: string[];
 
-  @ApiProperty()
+  @ApiProperty({ default: [] })
   @IsNotEmpty({ message: 'Encounter condition is required.' })
   encounterCondition: string[];
 }

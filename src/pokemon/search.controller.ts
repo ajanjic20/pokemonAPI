@@ -5,12 +5,11 @@ import { SearchPokDtoRes } from './pokemonDto/searchPokemon-res.dto';
 import {
   ApiBadRequestResponse,
   ApiOkResponse,
-  ApiTags,
   ApiSecurity,
 } from '@nestjs/swagger';
-@ApiTags('search')
+import { CustomController } from 'src/custom.decorator';
+@CustomController('search')
 @ApiSecurity('access-token')
-@Controller('search')
 export class SearchController {
   constructor(private readonly pokemonService: PokemonService) {}
 

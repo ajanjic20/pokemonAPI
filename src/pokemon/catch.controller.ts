@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Get, Query } from '@nestjs/common';
 import { PokemonService } from './pokemon.service';
 import { Model } from 'mongoose';
 import { User } from 'src/schemas/user.schema';
@@ -10,13 +10,11 @@ import { CatchPokDtoRes } from './pokemonDto/catchPokemon-res.dto';
 import {
   ApiBadRequestResponse,
   ApiOkResponse,
-  ApiTags,
   ApiSecurity,
 } from '@nestjs/swagger';
-
-@ApiTags('catch')
+import { CustomController } from 'src/custom.decorator';
+@CustomController('catch')
 @ApiSecurity('access-token')
-@Controller('catch')
 export class CatchController {
   constructor(
     private readonly pokemonService: PokemonService,

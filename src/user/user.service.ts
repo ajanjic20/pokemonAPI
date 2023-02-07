@@ -16,12 +16,10 @@ export class UserService {
       throw new HttpException('Number already taken', HttpStatus.BAD_REQUEST);
     }
     if (!(await this.userModel.findOne({ email: dto.email }).exec())) {
-      const caughtPokemon = [];
       const user = await this.userModel.create({
         email: dto.email,
         phone: dto.phone,
         password: hashedPassword,
-        caughtPokemon,
       });
       return `Successfully created account: ${user.email}`;
     } else {
