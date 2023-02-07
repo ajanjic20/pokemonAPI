@@ -21,3 +21,7 @@ $ npm run start:dev
 # production mode
 
 $ npm run start:prod
+
+# start local MongoDB server
+
+$ docker-compose up -d
