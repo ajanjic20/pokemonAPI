@@ -12,6 +12,7 @@ import { CatchController } from './pokemon/catch.controller';
 import { ConfigModule } from '@nestjs/config';
 import { MongodbConfigService } from './mongodb.config.service';
 import { validate } from './config/env.validation';
+import { UserController } from './user/user.controller';
 
 @Module({
   imports: [
@@ -28,11 +29,13 @@ import { validate } from './config/env.validation';
     UserModule,
     AuthModule,
   ],
+  providers: [],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(AuthMiddleware).forRoutes(PokemonController);
     consumer.apply(AuthMiddleware).forRoutes(SearchController);
     consumer.apply(AuthMiddleware).forRoutes(CatchController);
+    consumer.apply(AuthMiddleware).forRoutes(UserController);
   }
 }

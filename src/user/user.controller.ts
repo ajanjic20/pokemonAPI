@@ -1,23 +1,35 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { UsePipes, ValidationPipe, Get, Query } from '@nestjs/common';
 import { UserService } from './user.service';
-import * as bcrypt from 'bcrypt';
-import { CreateUserDto } from './userDto/user-req.dto';
-import { CreateUserResDto } from './userDto/user-res.dto';
-import { ApiBadRequestResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiOkResponse,
+  ApiSecurity,
+} from '@nestjs/swagger';
 import { CustomController } from 'src/custom.decorator';
+import { GetUserInfoDto } from './userInfoDto/userInfo-req.dto';
+import { GetUserInfoResDto } from './userInfoDto/userInfo-res.dto';
+import { AuthenticatedUser } from 'src/auth/currentUser';
 
 @CustomController('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  // create a new user
-  @Post('register')
-  @ApiOkResponse({ type: CreateUserResDto })
-  @ApiBadRequestResponse({ description: `Invalid input` })
-  async registerUser(@Body() dto: CreateUserDto) {
-    const res = new CreateUserResDto();
-    const hashedPassword = await bcrypt.hash(dto.password, 10);
-    res.email = await this.userService.createUser(dto, hashedPassword);
-    return res.email;
+  // get user's info
+  @Get('info')
+  @ApiSecurity('access-token')
+  @UsePipes(new ValidationPipe({ transform: true }))
+  @ApiOkResponse({ type: GetUserInfoResDto })
+  @ApiBadRequestResponse({ description: 'Invalid input' })
+  async getUserInfo(
+    @Query() dto: GetUserInfoDto,
+    @AuthenticatedUser() user: string,
+  ): Promise<GetUserInfoResDto> {
+    const userInfo = await this.userService.getUserInfo(dto, user);
+    const res: GetUserInfoResDto = {
+      email: userInfo.email,
+      name: userInfo.name,
+      phone: userInfo.phone,
+    };
+    return res;
   }
 }
